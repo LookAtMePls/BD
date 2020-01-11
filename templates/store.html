@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+<div class=" justify-content-center">
+<div class="col-12">
+<div class="inline">
+    <input class="form-control mr-sm-2" type="search" id="myInput" placeholder="Фильтр" aria-label="Search">
+</div>
+<table class="table">
+<thead>
+<tr>
+    <th>
+        Dish
+    </th>
+    <th>
+        Rating
+    </th>
+    <th>
+        Price
+    </th>
+</tr>
+</thead>
+<tbody id="myTable">
+    {% for dish in dishes %}
+        <tr>
+        <td>
+            {% if dish.small %}
+                <img src="{{ dish.small }}" width="20" height="20"/>
+            {% endif %}
+            <a href="{{ url_for('dish', id=dish.id) }}">{{ dish.title }}</a>
+        </td>
+        <td>
+            {{ (dish.scores|sum(attribute='value') / dish.scores|length) if dish.scores|length != 0 else 0.0 }}
+        </td>
+        <td>
+            {{ dish.price }}
+        </td>
+        </tr>
+    {% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+{% endblock %}

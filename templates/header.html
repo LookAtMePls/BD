@@ -1,0 +1,66 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="../static/main_styles.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+</html>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+      <a class="navbar-brand" href="{{ url_for('index') }}">MakDac</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          {% if user.is_authenticated %}
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link {% if request.endpoint == 'store' %} active {% endif %}" href="{{ url_for('store') }}">Store</a>
+          </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+          {% if not user.is_compiler %}
+            <a class="nav-link {% if request.endpoint == 'order' %} active {% endif %}" href="{{ url_for('order') }}">Order</a>
+          {% else %}
+            <a class="nav-link {% if request.endpoint == 'created' %} active {% endif %}" href="{{ url_for('created') }}">Dishes you created</a>
+          {% endif %}
+          </li>
+          {% endif %}
+        <li class="nav-item">
+          {% if user.is_authenticated and user.is_compiler %}
+            <a class="nav-link {% if request.endpoint == 'com_dish_new' %} active {% endif %}" href="{{ url_for('com_dish_new') }}">New dish</a>
+          {% endif %}
+        </li>
+        </ul>
+        <div class="mt-2 mt-md-0">
+        <ul class="navbar-nav mr-auto">
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+            <div class="nav-link mr-sm-2">
+                Hello, {{ user.login }}!
+                {% if not user.is_compiler %}
+                    Your balance: ${{ user.money }}
+                {% endif %}
+            </div>
+            </li>
+            {% if not user.is_compiler %}
+            <li class="nav-item">
+                <a class="nav-link mr-sm-2" href="{{ url_for('add_funds') }}">Add funds</a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link mr-sm-2" href="{{ url_for('logout') }}">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link mr-sm-2" href="{{ url_for('login') }}">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link mr-sm-2" href="{{ url_for('reg') }}">Register</a>
+            </li>
+            {% endif %}
+        </ul>
+        </div>
+      </div>
+    </nav>

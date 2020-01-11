@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+<div class=" justify-content-center">
+<div class="col-12">
+<table class="table">
+{% for dish in dishes %}
+    <tr>
+        <td>
+            <a href="{{ url_for('dish', id=dish.id) }}">{{ dish.title }}</a>
+        </td>
+        <td class="text-center">
+            Rating: {{ (dish.scores|sum(attribute='value') / dish.scores|length ) if dish.scores|length != 0 else 0.0 }}
+        </td>
+        <td class="text-right">
+            <a href="{{ url_for('com_dish', id=dish.id) }}">Edit</a>
+        </td>
+    </tr>
+{% endfor %}
+</table>
+</div>
+</div>
+</div>
+
+{% endblock %}

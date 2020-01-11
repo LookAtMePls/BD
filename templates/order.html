@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+<div class=" justify-content-center">
+<div class="col-12">
+<table class="table">
+<thead>
+<tr>
+    <th>
+        Dish
+    </th>
+    <th>
+        Rating
+    </th>
+</tr>
+</thead>
+    {% for dish in dishes %}
+        <tr>
+        <td>
+            {% if dish.small %}
+                <img src="{{ dish.small }}" width="20" height="20"/>
+            {% endif %}
+            <a href="{{ url_for('dish', id=dish.id) }}">{{ dish.title }}</a>
+        </td>
+        <td>
+            {{ (dish.scores|sum(attribute='value') / dish.scores|length) if dish.scores|length != 0 else 0.0 }}
+        </td>
+        </tr>
+    {% endfor %}
+</table>
+</div>
+</div>
+</div>
+{% endblock %}
