@@ -2,7 +2,7 @@ from pony.orm import *
 from flask_login import UserMixin
 from datetime import datetime
 
-db = Database()
+db = Database(provider='postgres', user='pony', password='pony', host='localhost', database='pony')
 
 
 class User(db.Entity, UserMixin):
@@ -11,7 +11,6 @@ class User(db.Entity, UserMixin):
     email = Required(str)
     pwd = Required(str)
     is_compiler = Required(bool, default=False)
-    description = Optional(str)
     scores = Set('Score')
     dish_in_order = Set('Dish', reverse='users')
     order_compiler = Set('Dish', reverse='compiler')

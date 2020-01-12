@@ -50,11 +50,22 @@
 			    				</div>
 			    			</div>
 
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <div class="form-group">
+			    						<input type="password" name="secret_key" id="secret_key" class="form-control input-sm" placeholder="Secret key">
+			    					</div>
+                                    {% if 'secret_key' in form.errors %}
+                                        <small class="text-danger">{{ form.errors['secret_key'][0] }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+
 			    			<input type="submit" value="Register" class="btn btn-info btn-block">
 
 			    		</form>
                         <br>
-                <p class="text-center"><a href="{{ url_for('reg') }}">for regular users</a></p>
+                        <p class="text-center"><a href="{{ url_for('reg') }}">for regular users</a></p>
 			    	</div>
 	    		</div>
     		</div>

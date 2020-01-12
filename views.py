@@ -7,6 +7,7 @@ app = Flask(__name__)
 app.secret_key = 'asd&*$VNkhvrhk*V#__w3vqlbq;1'
 pony = Pony(app)
 manager = LoginManager(app)
+manager.login_view = 'login'
 
 @manager.user_loader
 def load_user(user_id):
@@ -62,6 +63,7 @@ def store():
     return render_template('store.html', user=current_user, dishes=dish)
 
 @app.route('/dish/<int:id>')
+@login_required
 def dish(id):
     dish = Dish.get(id=id)
     scores = select(s for s in Score if s.dish == dish).order_by(Score.dt)
@@ -70,6 +72,7 @@ def dish(id):
     return render_template('dish.html', user=current_user, dish=dish, scores=scores)
 
 @app.route('/post_score', methods=['POST'])
+@login_required
 def post_score():
     dish_id = request.form['id']
     score = request.form['score']
@@ -92,11 +95,11 @@ def purchase(id):
             user.dish_in_order.add(dish)
     return redirect(url_for('dish', id=id))
 
-@app.route('/add_funds', methods=['POST', 'GET'])
+@app.route('/add_money', methods=['POST', 'GET'])
 @login_required
-def add_funds():
+def add_money():
     if request.method == 'POST':
-        money = request.form['funds']
+        money = request.form['money']
         try:
             money = int(money)
         except:
@@ -104,13 +107,13 @@ def add_funds():
         t = Transaction(type='Add', value=money, user=current_user, dt=datetime.now())
         current_user.money += money
         return redirect(url_for('index'))
-    return render_template('add_funds.html', user=current_user)
+    return render_template('add_money.html', user=current_user)
 
 
 
 @app.route('/com/reg', methods=['POST', 'GET'])
 def com_reg():
-    form = RegForm(request.form)
+    form = comRegForm(request.form)
     if request.method == 'POST' and form.validate():
         User(login=form.data['login'], email=form.data['email'], pwd=form.data['pwd1'], is_compiler=True)
         return redirect(url_for('com_login'))

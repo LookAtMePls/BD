@@ -25,6 +25,12 @@ def pwd_check(form, field):
 	if pwd1 != pwd2:
 		raise ValidationError('Passwords should match')
 
+def secret_key_check(form, field):
+	secret_key = '5656'
+	key = form.secret_key.data
+	if key != secret_key:
+		raise ValidationError('Wrong secret key')
+
 def login_check(form, field):
 	login = field.data
 	check = User.get(login=login)
@@ -89,6 +95,7 @@ class comRegForm(Form):
 	email = StringField('E-mail', [InputRequired(), com_email_free])
 	pwd1 = PasswordField('Password', [InputRequired(), len_check])
 	pwd2 = PasswordField('Password again', [InputRequired(), pwd_check])
+	secret_key = PasswordField('Wrong secret key', [InputRequired(), secret_key_check])
 
 
 class comLoginForm(Form):

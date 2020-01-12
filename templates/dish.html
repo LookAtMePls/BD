@@ -27,7 +27,7 @@
             {% if user.money >= dish.price %}
                 <a class="btn btn-primary" href="{{ url_for('purchase', id=dish.id) }}">Buy for ${{ dish.price }}</a>
             {% else %}
-                <a class="btn btn-secondary">Buy for ${{ dish.price }}. Not enough funds</a>
+                <a class="btn btn-secondary">Buy for ${{ dish.price }}. Not enough money</a>
             {% endif %}
         {% endif %}
     {% endif %}
