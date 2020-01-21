@@ -26,7 +26,7 @@ def pwd_check(form, field):
 		raise ValidationError('Passwords should match')
 
 def secret_key_check(form, field):
-	secret_key = '5656'
+	secret_key = '4642'
 	key = form.secret_key.data
 	if key != secret_key:
 		raise ValidationError('Wrong secret key')
